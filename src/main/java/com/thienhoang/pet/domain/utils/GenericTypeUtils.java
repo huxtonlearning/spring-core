@@ -1,13 +1,22 @@
 package com.thienhoang.pet.domain.utils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.util.ReflectionUtils;
 
 public class GenericTypeUtils {
+
+  public static <T> void updateData(T target, String fieldName, Object value) {
+    try {
+      Field field = ReflectionUtils.findField(target.getClass(), fieldName);
+      if (field != null) {
+        field.setAccessible(true);
+        field.set(target, value);
+      }
+    } catch (Exception ignore) {
+    }
+  }
 
   /**
    * Tạo instance mới của entity class thông qua reflection. Phương thức này sử dụng cơ chế

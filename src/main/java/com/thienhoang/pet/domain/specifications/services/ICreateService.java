@@ -61,6 +61,9 @@ public interface ICreateService<E, ID, RES, REQ>
   /** Hàm mapping mặc định (không làm gì) — override nếu cần xử lý riêng. */
   default void mappingCreateEntity(HeaderContext context, E entity, REQ request) {
     FnCommon.copyProperties(entity, request); // Copy các field giống nhau từ request sang entity
+
+    GenericTypeUtils.updateData(entity, "creatorId", context.getUserId());
+    GenericTypeUtils.updateData(entity, "modifierId", context.getUserId());
   }
 
   default void postCreateHandler(HeaderContext context, E entity, REQ request) {}

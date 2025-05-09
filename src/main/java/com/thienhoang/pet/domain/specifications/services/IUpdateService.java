@@ -2,6 +2,7 @@ package com.thienhoang.pet.domain.specifications.services;
 
 import com.thienhoang.pet.domain.specifications.models.values.HeaderContext;
 import com.thienhoang.pet.domain.utils.FnCommon;
+import com.thienhoang.pet.domain.utils.GenericTypeUtils;
 import com.thienhoang.pet.domain.utils.function.interfaces.QuadConsumer;
 import java.util.function.BiFunction;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -31,8 +32,6 @@ public interface IUpdateService<E, ID, RES, REQ>
       validationHandler.accept(context, id, entity, request); // Kiểm tra hợp lệ
     }
 
-    FnCommon.copyProperties(entity, request); // Gán dữ liệu chung từ request
-
     if (mappingHandler != null) {
       mappingHandler.accept(context, entity, request); // Gọi hàm mapping tùy chỉnh
     }
@@ -58,5 +57,8 @@ public interface IUpdateService<E, ID, RES, REQ>
   default void validateUpdateRequest(HeaderContext context, ID id, E entity, REQ request) {}
 
   // Mapping mặc định khi update
-  default void mappingUpdateEntity(HeaderContext context, E entity, REQ request) {}
+  default void mappingUpdateEntity(HeaderContext context, E entity, REQ request) {
+    FnCommon.copyProperties(entity, request); // Gán dữ liệu chung từ request
+    GenericTypeUtils.updateData(entity, "modifierId", context.getUserId());
+  }
 }
