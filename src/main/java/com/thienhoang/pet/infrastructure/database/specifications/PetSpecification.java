@@ -8,11 +8,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.Objects;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.StringUtils;
 
 public class PetSpecification implements Specification<Pet> {
 
-  private PetParams params;
+  private final PetParams params;
 
   public PetSpecification(PetParams params) {
     this.params = params;
@@ -23,11 +22,11 @@ public class PetSpecification implements Specification<Pet> {
       Root<Pet> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
     Predicate predicate = criteriaBuilder.conjunction(); // Khởi tạo một AND condition
 
-    if (StringUtils.hasLength(params.getKeyword())) {
-      Predicate keywordPredicate =
-          criteriaBuilder.like(root.get("name"), "%" + params.getKeyword() + "%");
-      predicate = criteriaBuilder.and(predicate, keywordPredicate);
-    }
+    //    if (StringUtils.hasLength(params.getKeyword())) {
+    //      Predicate keywordPredicate =
+    //          criteriaBuilder.like(root.get("name"), "%" + params.getKeyword() + "%");
+    //      predicate = criteriaBuilder.and(predicate, keywordPredicate);
+    //    }
 
     if (Objects.nonNull(params.getType())) {
       Predicate typePredicate = criteriaBuilder.equal(root.get("type"), params.getType());

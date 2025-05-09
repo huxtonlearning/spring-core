@@ -1,16 +1,16 @@
-package com.thienhoang.pet.infrastructure.web;
+package com.thienhoang.pet.infrastructure.web.method.argument.impl;
 
 import com.thienhoang.pet.domain.specifications.models.values.HeaderContext;
+import com.thienhoang.pet.infrastructure.web.method.argument.IMethodArgument;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
-public class HeaderContextResolver implements HandlerMethodArgumentResolver {
+public class HeaderContextResolver implements IMethodArgument {
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
