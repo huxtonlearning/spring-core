@@ -22,6 +22,4 @@ public class Pet extends AuditingData {
 
   @Column(nullable = false)
   private String description;
-
-  @Embedded private AuditingData data;
 }
