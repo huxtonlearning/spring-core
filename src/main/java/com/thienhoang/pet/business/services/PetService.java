@@ -36,7 +36,7 @@ public class PetService implements IBaseService<Pet, Long, Pet, PetRequest, PetP
   }
 
   @Override
-  public Specification<Pet> buildQuery(HeaderContext context, PetParams params) {
+  public Specification<Pet> buildQuery(HeaderContext context, String search, PetParams params) {
     return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
   }
 }

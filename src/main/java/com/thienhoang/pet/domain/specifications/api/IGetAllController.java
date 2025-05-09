@@ -28,6 +28,7 @@ public interface IGetAllController<E, RES, P> {
   })
   default PageResponse<RES> getAll(
       @Parameter(hidden = true) HeaderContext context,
+      String search,
       Pageable pageable,
       @Parameter(hidden = true) P params) {
 
@@ -35,6 +36,6 @@ public interface IGetAllController<E, RES, P> {
       return null;
     }
 
-    return new PageResponse<>(getGetAllService().getAll(context, pageable, params));
+    return new PageResponse<>(getGetAllService().getAll(context, search, pageable, params));
   }
 }

@@ -16,23 +16,25 @@ public interface IGetAllService<E, RES, P> {
     return null;
   }
 
-  default Specification<E> buildQuery(HeaderContext context, P params) {
+  default Specification<E> buildQuery(HeaderContext context, String search, P params) {
     return (root, query, cb) -> cb.conjunction();
   }
 
   default Page<RES> getAll(
       HeaderContext context,
+      String search,
       Pageable pageable,
       P params,
       BiFunction<HeaderContext, E, RES> mappingResponseHandler) {
-    Page<E> data = getSpecificationExecutor().findAll(buildQuery(context, params), pageable);
+    Page<E> data =
+        getSpecificationExecutor().findAll(buildQuery(context, search, params), pageable);
 
     return data.map(item -> mappingResponseHandler.apply(context, item));
   }
 
-  default Page<RES> getAll(HeaderContext context, Pageable pageable, P params) {
+  default Page<RES> getAll(HeaderContext context, String search, Pageable pageable, P params) {
 
-    return getAll(context, pageable, params, this::mappingPageResponse);
+    return getAll(context, search, pageable, params, this::mappingPageResponse);
   }
 
   default RES mappingPageResponse(HeaderContext context, E item) {
