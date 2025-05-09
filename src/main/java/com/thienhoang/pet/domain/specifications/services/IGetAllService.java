@@ -16,8 +16,22 @@ public interface IGetAllService<E, RES, P> {
     return null;
   }
 
-  default Specification<E> buildQuery(HeaderContext context, String search, P params) {
-    return (root, query, cb) -> cb.conjunction();
+  default Specification<E> buildEntityQuery(HeaderContext context, String search, P params) {
+    return (root, query, cb) -> {
+      return cb.conjunction();
+    };
+  }
+
+  default Specification<E> buildParamsQuery(HeaderContext context, String search, String filter) {
+    return (root, query, cb) -> {
+      return cb.conjunction();
+    };
+  }
+
+  default Specification<E> buildQuery(
+      HeaderContext context, String search, P params, String filter) {
+    buildEntityQuery(context, search, entity);
+    buildParamsQuery(context, search, params);
   }
 
   default Page<RES> getAll(

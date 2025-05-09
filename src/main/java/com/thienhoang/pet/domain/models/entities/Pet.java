@@ -2,13 +2,10 @@ package com.thienhoang.pet.domain.models.entities;
 
 import com.thienhoang.pet.domain.models.enums.PetType;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -16,21 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pet {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @Column(nullable = false)
-  private Long creatorId;
-
-  @Column(nullable = false)
-  private Long modifierId;
-
-  @CreationTimestamp private Timestamp createdAt;
-  @UpdateTimestamp private Timestamp modifiedAt;
-  private boolean isDeleted = false;
+public class Pet extends AuditingData {
 
   @Column(nullable = false)
   private String name;
@@ -39,4 +22,6 @@ public class Pet {
 
   @Column(nullable = false)
   private String description;
+
+  @Embedded private AuditingData data;
 }
