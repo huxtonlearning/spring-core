@@ -9,10 +9,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.Attribute;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +28,11 @@ public interface IGetAllService<E, RES> {
       HeaderContext context, String search, Map<String, Object> filter) {
 
     return (root, query, cb) -> {
-      List<String> fieldNames = new ArrayList<>();
-      for (Attribute<? super E, ?> attribute : root.getModel().getAttributes()) {
-        fieldNames.add(attribute.getName());
-      }
-
       List<Predicate> predicates = new ArrayList<>();
-      List<Predicate> searchPredicates = buildSearchQuery(fieldNames, root, query, cb, search);
-      List<Predicate> entityPredicates = buildEntityQuery(fieldNames, root, query, cb, filter);
+      List<Predicate> searchPredicates =
+          buildSearchQuery(root.getModel().getAttributes(), root, query, cb, search);
+      List<Predicate> entityPredicates =
+          buildEntityQuery(root.getModel().getAttributes(), root, query, cb, filter);
       List<Predicate> filterPredicates = buildFilterQuery(root, query, cb, filter);
 
       predicates.addAll(searchPredicates);
@@ -54,7 +48,7 @@ public interface IGetAllService<E, RES> {
   }
 
   default List<Predicate> buildEntityQuery(
-      List<String> fieldNames,
+      Set<Attribute<? super E, ?>> fieldNames,
       Root<E> root,
       CriteriaQuery<?> query,
       CriteriaBuilder cb,
@@ -62,8 +56,15 @@ public interface IGetAllService<E, RES> {
 
     List<Predicate> predicates = new ArrayList<>();
     fieldNames.forEach(
-        fieldName -> {
+        attribute -> {
+          String fieldName = attribute.getName();
           Object value = filter.get(fieldName);
+
+          if (attribute.getJavaType().isEnum() && value instanceof String) {
+            value =
+                Enum.valueOf(
+                    (Class<Enum>) attribute.getJavaType().asSubclass(Enum.class), value.toString());
+          }
 
           if (value != null) {
             predicates.add(cb.equal(root.get(fieldName), value));
@@ -78,7 +79,7 @@ public interface IGetAllService<E, RES> {
   }
 
   default List<Predicate> buildSearchQuery(
-      List<String> fieldNames,
+      Set<Attribute<? super E, ?>> fieldNames,
       Root<E> root,
       CriteriaQuery<?> query,
       CriteriaBuilder cb,

@@ -3,6 +3,7 @@ package com.thienhoang.pet.domain.specifications.services;
 import com.thienhoang.pet.domain.specifications.models.values.HeaderContext;
 import com.thienhoang.pet.domain.utils.FnCommon;
 import com.thienhoang.pet.domain.utils.GenericTypeUtils;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -23,6 +24,7 @@ public interface ICreateService<E, ID, RES, REQ>
       REQ request,
       TriConsumer<HeaderContext, E, REQ> validationCreateHandler,
       TriConsumer<HeaderContext, E, REQ> mappingEntityHandler,
+      BiConsumer<HeaderContext, E> mappingAuditingHandler,
       TriConsumer<HeaderContext, E, REQ> postHandler,
       BiFunction<HeaderContext, E, RES> mappingResponseHandler) {
     E entity = GenericTypeUtils.getNewInstance(this); // Tạo entity mới bằng Reflection
@@ -33,6 +35,10 @@ public interface ICreateService<E, ID, RES, REQ>
 
     if (mappingEntityHandler != null) {
       mappingEntityHandler.accept(context, entity, request); // Gọi mapping tùy chỉnh
+    }
+
+    if (mappingAuditingHandler != null) {
+      mappingAuditingHandler.accept(context, entity); // Gọi mapping tùy chỉnh
     }
     entity = getJpaRepository().save(entity);
 
@@ -51,6 +57,7 @@ public interface ICreateService<E, ID, RES, REQ>
         request,
         this::validateCreateRequest,
         this::mappingCreateEntity,
+        this::mappingCreateAuditingEntity,
         this::postCreateHandler,
         this::mapResponse);
   }
@@ -58,12 +65,16 @@ public interface ICreateService<E, ID, RES, REQ>
   /** Hàm validate mặc định (không làm gì) — override trong implementation nếu cần. */
   default void validateCreateRequest(HeaderContext context, E entity, REQ request) {}
 
+  default void mappingCreateAuditingEntity(HeaderContext context, E entity) {
+    if (context != null) {
+      GenericTypeUtils.updateData(entity, "creatorId", context.getUserId());
+      GenericTypeUtils.updateData(entity, "modifierId", context.getUserId());
+    }
+  }
+
   /** Hàm mapping mặc định (không làm gì) — override nếu cần xử lý riêng. */
   default void mappingCreateEntity(HeaderContext context, E entity, REQ request) {
     FnCommon.copyProperties(entity, request); // Copy các field giống nhau từ request sang entity
-
-    GenericTypeUtils.updateData(entity, "creatorId", context.getUserId());
-    GenericTypeUtils.updateData(entity, "modifierId", context.getUserId());
   }
 
   default void postCreateHandler(HeaderContext context, E entity, REQ request) {}
