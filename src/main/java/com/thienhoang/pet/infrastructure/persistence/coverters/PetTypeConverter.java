@@ -1,4 +1,4 @@
-package com.thienhoang.pet.infrastructure.database.coverters;
+package com.thienhoang.pet.infrastructure.persistence.coverters;
 
 import com.thienhoang.pet.domain.models.enums.PetType;
 import jakarta.persistence.AttributeConverter;

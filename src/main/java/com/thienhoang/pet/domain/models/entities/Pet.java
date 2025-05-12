@@ -1,5 +1,6 @@
 package com.thienhoang.pet.domain.models.entities;
 
+import com.thienhoang.common.models.entities.AuditingData;
 import com.thienhoang.pet.domain.models.enums.PetType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

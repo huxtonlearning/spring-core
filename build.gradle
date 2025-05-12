@@ -21,9 +21,14 @@ configurations {
 
 repositories {
     mavenCentral()
+    mavenLocal()  // <- Bắt buộc để tìm thư viện local
+
 }
 
 dependencies {
+
+    implementation group: 'com.thienhoang', name: 'common', version: '1.0.1'
+
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
