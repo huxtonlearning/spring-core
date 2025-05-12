@@ -12,9 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public interface IGetAllController<E, RES, P> {
+public interface IGetAllController<E, RES> {
 
-  default IGetAllService<E, RES, P> getGetAllService() {
+  default IGetAllService<E, RES> getGetAllService() {
 
     return null;
   }
@@ -52,12 +52,12 @@ public interface IGetAllController<E, RES, P> {
       @Parameter(hidden = true) HeaderContext context,
       @RequestParam(required = false) String search,
       @Parameter(hidden = true) Pageable pageable,
-      @Parameter(hidden = true) P params) {
+      @RequestParam(required = false) String filter) {
 
     if (getGetAllService() == null) {
       return null;
     }
 
-    return new PageResponse<>(getGetAllService().getAll(context, search, pageable, params));
+    return new PageResponse<>(getGetAllService().getAll(context, search, pageable, filter));
   }
 }

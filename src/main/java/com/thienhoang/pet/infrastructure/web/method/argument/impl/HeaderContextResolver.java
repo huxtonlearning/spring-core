@@ -1,6 +1,8 @@
 package com.thienhoang.pet.infrastructure.web.method.argument.impl;
 
 import com.thienhoang.pet.domain.specifications.models.values.HeaderContext;
+import com.thienhoang.pet.domain.utils.HeaderKeys;
+import com.thienhoang.pet.domain.utils.JsonParserUtils;
 import com.thienhoang.pet.infrastructure.web.method.argument.IMethodArgument;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -32,6 +34,12 @@ public class HeaderContextResolver implements IMethodArgument {
 
     // Bạn có thể parse JWT, hoặc lấy userId, tenantId... ở đây nếu cần
 
-    return HeaderContext.builder().userId(1L).name("Hoang").build();
+    String user = request.getHeader(HeaderKeys.USER);
+    try {
+      return JsonParserUtils.entity(user, HeaderContext.class);
+    } catch (Exception e) {
+
+      return null;
+    }
   }
 }

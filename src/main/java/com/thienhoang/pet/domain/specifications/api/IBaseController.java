@@ -4,10 +4,10 @@ import com.thienhoang.pet.domain.specifications.services.IBaseService;
 import com.thienhoang.pet.domain.specifications.services.ICrudService;
 import com.thienhoang.pet.domain.specifications.services.IGetAllService;
 
-public interface IBaseController<E, ID, RES, REQ, PARAMS>
-    extends IGetAllController<E, RES, PARAMS>, ICrudController<E, ID, RES, REQ> {
+public interface IBaseController<E, ID, RES, REQ>
+    extends IGetAllController<E, RES>, ICrudController<E, ID, RES, REQ> {
 
-  IBaseService<E, ID, RES, REQ, PARAMS> getService();
+  IBaseService<E, ID, RES, REQ> getService();
 
   @Override
   default ICrudService<E, ID, RES, REQ> getCrudService() {
@@ -15,7 +15,7 @@ public interface IBaseController<E, ID, RES, REQ, PARAMS>
   }
 
   @Override
-  default IGetAllService<E, RES, PARAMS> getGetAllService() {
+  default IGetAllService<E, RES> getGetAllService() {
     return getService();
   }
 }

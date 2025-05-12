@@ -2,10 +2,14 @@ package com.thienhoang.pet.domain.models.entities;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @MappedSuperclass
+@Setter
+@Getter
 public class AuditingData {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
