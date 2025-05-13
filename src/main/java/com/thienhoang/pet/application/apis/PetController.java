@@ -1,7 +1,7 @@
 package com.thienhoang.pet.application.apis;
 
-import com.thienhoang.common.specifications.api.IBaseController;
-import com.thienhoang.common.specifications.services.IBaseService;
+import com.thienhoang.common.interfaces.api.IBaseController;
+import com.thienhoang.common.interfaces.services.IBaseService;
 import com.thienhoang.pet.business.services.PetService;
 import com.thienhoang.pet.domain.models.entities.Pet;
 import com.thienhoang.pet.domain.models.values.requests.PetRequest;

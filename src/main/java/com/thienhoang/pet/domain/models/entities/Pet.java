@@ -1,26 +1,14 @@
 package com.thienhoang.pet.domain.models.entities;
 
-import com.thienhoang.common.models.entities.AuditingData;
+import com.thienhoang.common.models.entities.AuditingEntity;
 import com.thienhoang.pet.domain.models.enums.PetType;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
-@Setter
-@Table(name = "pet")
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-public class Pet extends AuditingData {
-
-  @Column(nullable = false)
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class Pet extends AuditingEntity {
   private String name;
-
   private PetType type;
-
-  @Column(nullable = false)
   private String description;
 }
