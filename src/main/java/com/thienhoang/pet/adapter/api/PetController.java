@@ -1,8 +1,8 @@
-package com.thienhoang.pet.application.apis;
+package com.thienhoang.pet.adapter.api;
 
 import com.thienhoang.common.interfaces.api.IBaseController;
 import com.thienhoang.common.interfaces.services.IBaseService;
-import com.thienhoang.pet.business.services.PetService;
+import com.thienhoang.pet.application.PetService;
 import com.thienhoang.pet.domain.models.entities.Pet;
 import com.thienhoang.pet.domain.models.values.requests.PetRequest;
 import lombok.RequiredArgsConstructor;

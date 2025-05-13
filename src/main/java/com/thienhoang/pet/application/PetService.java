@@ -1,4 +1,4 @@
-package com.thienhoang.pet.business.services;
+package com.thienhoang.pet.application;
 
 import com.thienhoang.common.interfaces.persistence.IBasePersistence;
 import com.thienhoang.common.interfaces.persistence.IJpaGetAllPersistence;
